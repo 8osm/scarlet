@@ -1,0 +1,29 @@
+{
+  "name": "nso",
+  "version": "1.0.0",
+  "description": "Bancho server",
+  "main": "index.js",
+  "dependencies": {
+    "bcrypt": "^3.0.6",
+    "md5": "^2.2.1",
+    "mysql": "^2.17.1",
+    "request": "^2.88.0",
+    "sqlstring": "^2.3.1",
+    "uuid": "^3.3.2",
+    "osu-packet": "4.1.1"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/tojiru/nso.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/tojiru/nso/issues"
+  },
+  "homepage": "https://github.com/tojiru/nso#readme"
+}

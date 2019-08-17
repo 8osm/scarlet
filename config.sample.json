@@ -1,0 +1,16 @@
+{
+    "db": {
+        "username": "root",
+        "password": "",
+        "database": "ripple",
+        "host": "localhost"
+    },
+    "server": {
+        "port": 6969,
+        "key": ""
+    },
+    "localize": {
+        "enable": 1,
+        "ipapi": "http://ip.zxq.co"
+    }
+}
