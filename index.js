@@ -25,7 +25,7 @@ app.on("request", (req, res) => {
     })
 })
 
-app.listen(5001, async () => {
+app.listen(require("./config.json").server.port, async () => {
     log.info("Bancho has started successfully");
     log.info("Logging in bot");
     let botData = await query("SELECT * FROM users WHERE id = 999");
