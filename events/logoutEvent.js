@@ -1,10 +1,21 @@
 const playerUtils = require("../utils/playerUtils"),
-    osuPacket = require("osu-packet");
+    osuPacket = require("osu-packet"),
+    log = require("../common/log");
 
 
 
 function handle(token, data) {
-    const writer = new osuPacket.Bancho.Writer;
+    const writer = new osuPacket.Bancho.Writer,
+    user = playerUtils.getPlayerByToken(token);
+    let reason ="";
+    
+    if (data == 1) {
+        reason = "update";
+    } else {
+        reason = "quit";
+    }
+    log.info(user.info.username + " killed for " + reason);
+
     for (let i = 0; i < global.players.length; i++) {
         if (global.players[i].token == token) {
             writer.HandleUserQuit({

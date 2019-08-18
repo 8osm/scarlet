@@ -22,6 +22,9 @@ async function handle(res, data, token) {
                 require("../events/updateActionEvent")(token, Packet.data);
                 break;
             case 1:
+                if (Packet.data.message.startsWith("!")) {
+                    require("../constants/commands")(token, Packet.data);
+                }
                 require("../events/sendPublicMessageEvent")(token, Packet.data);
                 break;
             case 2:
