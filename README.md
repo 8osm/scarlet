@@ -33,6 +33,11 @@ $ screen -S scarlet
 $ node .
 ```
 
+## About Scarlet
+Scarlet aims to emulate the official osu! bancho by sending the same responses that the official bancho does do specific requests
+
+Other bancho implementations such as ruri, delta and pep.py do not do this.
+
 ## License
 Currently, Scarlet is licensed under MIT. Packages used by Scarlet may be licensed otherwise.
 
