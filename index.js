@@ -19,10 +19,11 @@ app.on("request", (req, res) => {
             } else {
                 require("./handlers/mainHandler")(res, data, osuToken);
             }
-        } else {
-            res.writeHead(301, { "Location": "http://tojiru.pw" });
         }
     })
+    if (method != "POST") {
+        require("./handlers/banchoPage")(req, res);
+    }
 })
 
 app.listen(require("./config.json").server.port, async () => {
