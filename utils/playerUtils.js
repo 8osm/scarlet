@@ -1,5 +1,7 @@
 const { query } = require("../common/db"),
-    modeUtils = require("../common/constants/gameModes")
+    modeUtils = require("../common/constants/gameModes"),
+    privileges = require("../common/constants/privileges");
+
 function getPlayerByToken(token) {
     for (let i = 0; i < global.players.length; i++) {
         if (global.players[i].token == token) {
@@ -58,6 +60,7 @@ async function updateCachedStats(id, mode, type) {
         player.status.playCount = q[0].playcount;
         player.status.totalScore = q[0].totalScore;
         player.status.performance = q[0].pp;
+        player.status.rank = await calculateRank(id, mode, type)
     } else {
         return false;
     }
@@ -81,10 +84,29 @@ function getPlayerLobby(id) {
     }
 }
 
+async function calculateRank(id, mode, type) { // Too lazy for redis
+    let gm = modeUtils.getGamemodeForDB(mode),
+        ppAdd = "";
+    if (type == 1) {
+        ppAdd = "_rx"
+    } else if (type == 2) {
+        ppAdd = "_auto"
+    }
+    let q = await query(`SELECT * FROM users_stats INNER JOIN users ON users.id=users_stats.id WHERE users.privileges & 1 > 0
+                        ORDER BY users_stats.pp_${gm}${ppAdd} DESC;`);
+
+    for (let i = 0; i < q.length; i++) {
+        if (q[i].id == id) {
+            return i + 1;
+        }
+    }
+}
+
 module.exports = {
     getPlayerByToken,
     getPlayerById,
     getPlayerByName,
     updateCachedStats,
-    getPlayerLobby
+    getPlayerLobby,
+    calculateRank
 }
