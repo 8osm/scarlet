@@ -14,7 +14,7 @@ class Player {
         this.presence = {
             timezone: timezone,
             countryId: countryId,
-            permissions: 0,
+            permissions: permissions,
             longitude: longitude,
             latitude: latitude,
         }

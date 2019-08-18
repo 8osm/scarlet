@@ -1,6 +1,7 @@
 const playerUtils = require("../utils/playerUtils"),
     osuPacket = require("osu-packet"),
-    log = require("../common/log");
+    log = require("../common/log"),
+    privileges = require("../common/constants/privileges");
 
 
 
@@ -11,6 +12,7 @@ function handle(token, target) {
         if (channel.name == target) {
             writer.ChannelJoinSuccess(target);
             log.info(player.info.username + " has joined channel " + target)
+            channel.joinedPlayers.push(player.info.userID)
         }
     })
     let realChannel = false;

@@ -7,7 +7,9 @@ const osuPacket = require("osu-packet"),
     countryUtils = require("../utils/countryUtils"),
     osuToken = require("../objects/player"),
     clientUtils = require("../utils/clientUtils"),
-    playerUtils = require("../utils/playerUtils");
+    playerUtils = require("../utils/playerUtils"),
+    adminPrivileges = require("../common/constants/privileges"),
+    banchoConfigUtils = require("../utils/banchoCfgUtil");
 
 async function handle(req, res, data, headers) {
     // Create writer and parse the login data
@@ -74,7 +76,24 @@ async function handle(req, res, data, headers) {
             } else {
                 countryId = countryUtils.getCountryID("A2")
             }
-            let player = new osuToken(userData, timezoneOffset, countryId, longitude, latitude);
+
+            // Calculate peppy privileges
+            let banchoPrivileges = 1;
+            if (Boolean(userData[0].privileges & adminPrivileges.ADMIN_MANAGE_BEATMAPS)) {
+                banchoPrivileges |= 2
+            }
+            // Add free supporter
+            let freeDirect = banchoConfigUtils.findValue("free_direct");
+            if (freeDirect.value_int == 1) {
+                banchoPrivileges |= 4;
+            }
+
+            if (Boolean(userData[0].privileges & adminPrivileges.USER_TOURNAMENT_STAFF)) {
+                banchoPrivileges |= 32;
+            }
+            
+
+            let player = new osuToken(userData, timezoneOffset, countryId, banchoPrivileges, longitude, latitude);
             global.players.push(player);
             res.setHeader("cho-token", player.token);
             // Send client lock
@@ -86,7 +105,7 @@ async function handle(req, res, data, headers) {
             // Send login success with users' id
             Writer.LoginReply(userData[0].id);
             // Send users' permissions
-            Writer.LoginPermissions(6);
+            Writer.LoginPermissions(banchoPrivileges);
             // Send main menu news image.
             Writer.TitleUpdate("https://i.ppy.sh/b361683ebd1a8c694942cf3b5ea0cab31f84e4f7/68747470733a2f2f7075752e73682f44585943772f353365383965393933302e706e67|https://www.twitch.tv/osulive");
             // Send friends list
@@ -152,9 +171,21 @@ async function handle(req, res, data, headers) {
             Writer.ChannelListingComplete();
 
 
-            
+
             log.info(username + " has just logged in")
+        } else {
+            res.set("cho-token", "Invalid");
+            log.warning(username + " has just tried to login using the wrong password")
+            Writer.LoginReply(loginResponses.INVALID_CREDENTIALS);
+            res.end(Writer.toBuffer);
+            return;
         }
+    } else {
+        res.set("cho-token", "Invalid");
+        log.warning(username + " has just tried to login using the wrong username")
+        Writer.LoginReply(loginResponses.INVALID_CREDENTIALS);
+        res.end(Writer.toBuffer);
+        return;
     }
 
     res.end(Writer.toBuffer)

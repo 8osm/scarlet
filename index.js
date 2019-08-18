@@ -20,7 +20,7 @@ app.on("request", (req, res) => {
                 require("./handlers/mainHandler")(res, data, osuToken);
             }
         } else {
-            res.end("hi")
+            res.writeHead(301, { "Location": "http://tojiru.pw" });
         }
     })
 })
@@ -31,5 +31,11 @@ app.listen(require("./config.json").server.port, async () => {
     let botData = await query("SELECT * FROM users WHERE id = 999");
     let bot = new osuToken(botData, 0, require("./utils/countryUtils").getCountryID("A2"), 0, 0);
     global.players.push(bot);
-    require("./objects/channel").createChannels()
+    log.info("Bot added");
+    log.info("Adding all channels");
+    await require("./objects/channel").createChannels()
+    log.info("Channels have been added")
+    log.info("Setting up bancho config");
+    await require("./utils/banchoCfgUtil").createConfig()
+    log.info("Bancho config created")
 })
