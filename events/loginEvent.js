@@ -20,7 +20,7 @@ async function handle(req, res, data, headers) {
 
     // Check password sent is actually a valid MD5 hash.
     if (passwordMD5.length !== 32) {
-        res.set("cho-token", "Invalid");
+        res.setHeader("cho-token", "Invalid");
         log.warning(username + " has just tried to login using invalid credentials")
         Writer.LoginReply(loginResponses.INVALID_CREDENTIALS);
         res.end(Writer.toBuffer);
@@ -52,7 +52,7 @@ async function handle(req, res, data, headers) {
             }
             catch (ex) {
                 // Couldn't parse osu! client version
-                res.set("cho-token", "NOCLIENT");
+                res.setHeader("cho-token", "NOCLIENT");
                 writer.LoginReply(loginResponses.SERVER_ERROR);
                 res.end(writer.toBuffer);
                 return
@@ -174,14 +174,14 @@ async function handle(req, res, data, headers) {
 
             log.info(username + " has just logged in")
         } else {
-            res.set("cho-token", "Invalid");
+            res.setHeader("cho-token", "Invalid");
             log.warning(username + " has just tried to login using the wrong password")
             Writer.LoginReply(loginResponses.INVALID_CREDENTIALS);
             res.end(Writer.toBuffer);
             return;
         }
     } else {
-        res.set("cho-token", "Invalid");
+        res.setHeader("cho-token", "Invalid");
         log.warning(username + " has just tried to login using the wrong username")
         Writer.LoginReply(loginResponses.INVALID_CREDENTIALS);
         res.end(Writer.toBuffer);

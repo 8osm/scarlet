@@ -31,6 +31,8 @@ app.listen(require("./config.json").server.port, async () => {
     log.info("Logging in bot");
     let botData = await query("SELECT * FROM users WHERE id = 999");
     let bot = new osuToken(botData, 0, require("./utils/countryUtils").getCountryID("A2"), 0, 0);
+    bot.status.status = 8;
+    bot.status.statusText = "new features";
     global.players.push(bot);
     log.info("Bot added");
     log.info("Adding all channels");
