@@ -36,9 +36,9 @@ class Player {
         }
         this.token = uuid.v4();
         this.usingRelax = false;
-        this.usingAuto = false;
+       // this.usingAuto = false;
         this.announceRelax = false;
-        this.announceAP = false;
+       // this.announceAP = false;
     }
     enqueue(buffer) {
         this.queue.push(buffer);

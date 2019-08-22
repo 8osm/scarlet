@@ -8,9 +8,8 @@ function handle(req, res) {
     res.write("\n");;
     res.write("welcome to the Scarlet bancho implementation :d~\n");
     res.write("\n");
-    res.write("home:   http://tojiru.pw \n");
-    res.write("status: http://stat.tojiru.pw \n");
-    res.write("boat:   https://discord.gg/2wTazST \n")
+    res.write("home:   http://asuki.me \n");
+    res.write("boat:   https://discord.gg/HKMtwKS \n")
     res.write("online: " + global.players.length + " players");
     res.write("</pre>");
     res.end();

@@ -31,20 +31,20 @@ async function updateCachedStats(id, mode, type) {
     let q;
     if (type == 1) {
         q = await query(`SELECT
-        ranked_score_${gm}_rx AS rankedScore,
-        avg_accuracy_${gm}_rx AS accuracy,
-        playcount_${gm}_rx AS playcount,
-        total_score_${gm}_rx AS totalScore,
-        pp_${gm}_rx AS pp
-        FROM users_stats WHERE id = ?`, player.info.userID)
-    } else if (type == 2) {
+        ranked_score_${gm} AS rankedScore,
+        avg_accuracy_${gm} AS accuracy,
+        playcount_${gm} AS playcount,
+        total_score_${gm} AS totalScore,
+        pp_${gm} AS pp
+        FROM relax_stats WHERE id = ?`, player.info.userID)
+    /*} else if (type == 2) {
         q = await query(`SELECT
         ranked_score_${gm}_ap AS rankedScore,
         avg_accuracy_${gm}_ap AS accuracy,
         playcount_${gm}_ap AS playcount,
         total_score_${gm}_ap AS totalScore,
         pp_${gm}_auto AS pp
-        FROM users_stats WHERE id = ?`, player.info.userID)
+        FROM users_stats WHERE id = ?`, player.info.userID) */
     } else {
         q = await query(`SELECT
         ranked_score_${gm} AS rankedScore,
@@ -106,6 +106,7 @@ module.exports = {
     getPlayerByToken,
     getPlayerById,
     getPlayerByName,
+    addFriend,
     updateCachedStats,
     getPlayerLobby,
     calculateRank

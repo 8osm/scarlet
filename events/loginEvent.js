@@ -91,15 +91,22 @@ async function handle(req, res, data, headers) {
             if (Boolean(userData[0].privileges & adminPrivileges.USER_TOURNAMENT_STAFF)) {
                 banchoPrivileges |= 32;
             }
-            
+            if (!Boolean(userData[0].privileges & adminPrivileges.ADMIN_MANAGE_SERVERS)) {
+                Writer.Announce("You can't connect to Asuki, if you aren't Admin")
+                res.setHeader("cho-token", "NOADMIN");
+                writer.LoginReply(loginResponses.SERVER_ERROR);
+                res.end(writer.toBuffer);
+                return
+            }
+
 
             let player = new osuToken(userData, timezoneOffset, countryId, banchoPrivileges, longitude, latitude);
             global.players.push(player);
             res.setHeader("cho-token", player.token);
             // Send client lock
-            Writer.BanInfo(0);
+          //  Writer.BanInfo(0);
             // Send Account Restricted
-            Writer.AccountRestricted();
+           // Writer.AccountRestricted();
             // Send bancho protocol version
             Writer.ProtocolNegotiation(19);
             // Send login success with users' id
