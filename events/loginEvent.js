@@ -9,7 +9,8 @@ const osuPacket = require("osu-packet"),
     clientUtils = require("../utils/clientUtils"),
     playerUtils = require("../utils/playerUtils"),
     adminPrivileges = require("../common/constants/privileges"),
-    banchoConfigUtils = require("../utils/banchoCfgUtil");
+    banchoConfigUtils = require("../utils/banchoCfgUtil"),
+    util = require('util');
 
 async function handle(req, res, data, headers) {
     // Create writer and parse the login data
@@ -116,10 +117,11 @@ async function handle(req, res, data, headers) {
             // Send main menu news image.
             Writer.TitleUpdate("https://i.ppy.sh/b361683ebd1a8c694942cf3b5ea0cab31f84e4f7/68747470733a2f2f7075752e73682f44585943772f353365383965393933302e706e67|https://www.twitch.tv/osulive");
             // Send friends list
-            let friendsList = [999];
-            let friends = await query("SELECT user2 FROM users_relationships WHERE user1 = ?", userData[0].id);
+            let friendsList = [];
+            let friends = await query(`SELECT user2 AS id FROM users_relationships WHERE user1 = ${player.info.userID}`);
             friends.forEach(friend => {
-                friendsList.push(friend);
+                console.log(`${player.info.username} is friends with ${util.inspect(friend.id)}`);
+                friendsList.push(friend.id);
             })
             Writer.FriendsList(friendsList);
             await playerUtils.updateCachedStats(userData[0].id, 0, 0);

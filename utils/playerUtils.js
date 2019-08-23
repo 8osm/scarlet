@@ -88,12 +88,12 @@ async function calculateRank(id, mode, type) { // Too lazy for redis
     let gm = modeUtils.getGamemodeForDB(mode),
         ppAdd = "";
     if (type == 1) {
-        ppAdd = "_rx"
-    } else if (type == 2) {
-        ppAdd = "_auto"
+        ppAdd = "relax";
+    } else {
+        ppAdd = "users";
     }
-    let q = await query(`SELECT * FROM users_stats INNER JOIN users ON users.id=users_stats.id WHERE users.privileges & 1 > 0
-                        ORDER BY users_stats.pp_${gm}${ppAdd} DESC;`);
+    let q = await query(`SELECT * FROM ${ppAdd}_stats INNER JOIN users ON users.id=${ppAdd}_stats.id WHERE users.privileges & 1 > 0
+                        ORDER BY ${ppAdd}_stats.pp_${gm} DESC;`);
 
     for (let i = 0; i < q.length; i++) {
         if (q[i].id == id) {
@@ -106,7 +106,6 @@ module.exports = {
     getPlayerByToken,
     getPlayerById,
     getPlayerByName,
-    addFriend,
     updateCachedStats,
     getPlayerLobby,
     calculateRank

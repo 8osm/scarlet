@@ -44,6 +44,9 @@ async function handle(res, data, token) {
             case 73:
                 require('../events/addFriendEvent')(token, Packet.data);
                 break;
+            case 74:
+                require('../events/removeFriendEvent')(token, Packet.data);
+                break;
             case 78:
                 require('../events/leaveChannelEvent')(token, Packet.data);
                 break;

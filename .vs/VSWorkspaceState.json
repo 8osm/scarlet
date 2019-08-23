@@ -1,9 +1,14 @@
 {
   "ExpandedNodes": [
     "",
+    "\\common",
+    "\\common\\db",
+    "\\common\\log",
     "\\events",
-    "\\handlers"
+    "\\handlers",
+    "\\objects",
+    "\\utils"
   ],
-  "SelectedNode": "\\events",
+  "SelectedNode": "\\events\\sendPrivateMessageEvent.js",
   "PreviewInSolutionExplorer": false
 }
