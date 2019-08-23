@@ -3,6 +3,7 @@ Scarlet is a custom bancho implementation, this handles:
 - Client login
 - Online users listing and statuses
 - Public and private chat
+- Adding and removing friends
 
 ## Requirements
 - Node.js 9.9 and previous
